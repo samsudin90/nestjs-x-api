@@ -145,13 +145,31 @@ export class PostService {
                             profileImage : true
                         }
                     },
-                    comments : true
+                    comments : {
+                        select : {
+                            id : true,
+                            body : true,
+                            createdAt : true,
+                            user : {
+                                select : {
+                                    id : true,
+                                    name : true,
+                                    username : true,
+                                    profileImage : true
+                                }
+                            }
+                        }, 
+                        orderBy : {
+                            createdAt : 'desc'
+                        }
+                    }
                 },
             })
 
             if(!post) {
                 return new NotFoundException
             }
+            delete post.userId
 
             return post
         } catch (error) {
